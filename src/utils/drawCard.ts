@@ -35,7 +35,7 @@ async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement
     // Calculate the font size based on canvas dimensions
     let fontSize = Math.min(canvas.width, canvas.height) / 15;
     ctx.font = `${fontSize}px pilowlava`;
-    ctx.fillStyle = color.primary;
+    ctx.fillStyle = PokeglobTypeColor[card.pokeglobs[0].type].main;
     const horizontalMargin = canvas.width * 0.1;
     const verticalMargin = canvas.height * 0.021;
     ctx.textAlign = 'left';
@@ -125,7 +125,6 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
         ctx.closePath();
         ctx.clip();
         await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[0].type].background, false);
-        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[0].type].background, false);
         ctx.restore();
     } else if (n === 2) {
         // Split canvas into two halves
@@ -138,7 +137,6 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
         ctx.closePath();
         ctx.clip();
         await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[0].type].background, false);
-        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[0].type].background, false);
         ctx.restore();
 
         ctx.save();
@@ -149,7 +147,6 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
         ctx.lineTo(0, canvas.height);
         ctx.closePath();
         ctx.clip();
-        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[1].type].background, false);
         await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[1].type].background, false);
         ctx.restore();
     } else {
@@ -185,16 +182,14 @@ function renderSVG(svgText: string, ctx: CanvasRenderingContext2D, x: number, y:
         // Replace stroke color if provided
         if (strokeColor) svgText = svgText.replace(/stroke="[^"]*"/g, `stroke="${strokeColor}"`);
         if (fillColor) svgText = svgText.replace(/fill="[^"]*"/g, `fill="${fillColor}"`);
-        const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });
-        const urlBlob = URL.createObjectURL(svgBlob);
 
+        const svgBase64 = btoa(unescape(encodeURIComponent(svgText)));
+        const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
         const img = new Image();
+        img.src = dataUrl;
         img.onload = () => {
             ctx.drawImage(img, x, y, width, height);
-            URL.revokeObjectURL(urlBlob); // Release memory
             resolve();
         };
-        img.onerror = reject;
-        img.src = urlBlob;
     });
 }
