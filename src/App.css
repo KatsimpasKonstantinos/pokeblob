@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+}
+
+h1 {
+  font-family: 'pilowlava';
+  /* Add fallback font */
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+
+.CanvasGallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}

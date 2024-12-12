@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'pilowlava';
+  src: URL('/public/media/fonts/Pilowlava-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'spacegrotesk';
+  src: URL('/public/media/fonts/SpaceGrotesk-Regular.woff2') format('woff2');
+  src: URL('/public/media/fonts/SpaceGrotesk-Bold.woff2') format('woff2');
+  src: URL('/public/media/fonts/SpaceGrotesk-Light.woff2') format('woff2');
+  src: URL('/public/media/fonts/SpaceGrotesk-Medium.woff2') format('woff2');
+  src: URL('/public/media/fonts/SpaceGrotesk-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'space-mono';
+  src: URL('/public/media/fonts/SpaceMono-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'uncut-sans';
+  src: URL('/public/media/fonts/UncutSans-Regular.woff2') format('woff2');
+}
+
+:root {
+  --color-primary: #FF5053;
+  --color-highlight: #FEF2FF;
+  --color-accent-a: #B2AAFF;
+  --color-accent-b: #6A5FDB;
+  --color-accent-c: #29114C;
+  --color-accent-d: #261A66;
+  --color-accent-e: #190B2F;
+  --color-background: #0F000A;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'pilowlava', 'spacegrotesk', 'space-mono', 'uncut-sans',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
