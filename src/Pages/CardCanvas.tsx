@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { drawCard } from '../utils/drawCard';
 import { PokeglobCard } from '../Classes/PokeglobCard';
+import { BlobSVGTexts } from '../utils/blobLoading';
 
-
-function CardCanvas(props: { pokeglobCard: PokeglobCard, size: number }) {
+function CardCanvas(props: { pokeglobCard: PokeglobCard, size: number, blobSVGTexts: BlobSVGTexts }) {
     const pokeglobCard = props.pokeglobCard;
     const canvasId = pokeglobCard.id.toString();
     const size = props.size;
@@ -17,7 +17,7 @@ function CardCanvas(props: { pokeglobCard: PokeglobCard, size: number }) {
             (async () => {
                 try {
                     canvas.style.visibility = 'hidden';
-                    await drawCard(canvas, pokeglobCard);
+                    await drawCard(canvas, pokeglobCard, props.blobSVGTexts);
                     canvas.style.visibility = 'visible';
                 } catch (error) {
                     console.error('Error drawing cards:', error);

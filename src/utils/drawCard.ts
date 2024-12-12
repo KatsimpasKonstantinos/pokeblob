@@ -1,23 +1,19 @@
-import { Pokeglob, PokeglobTypeColor } from '../Classes/Pokeglob';
+import { Pokeglob, PokeglobTypeColor, PokeglobSpikenessMax } from '../Classes/Pokeglob';
 import { PokeglobCard } from '../Classes/PokeglobCard';
 import { color } from './color';
+import { BlobSVGTexts, loadSVG } from './blobLoading';
 
-async function drawCard(canvas: HTMLCanvasElement, card: PokeglobCard) {
+async function drawCard(canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTexts: BlobSVGTexts) {
     try {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
         ctx.imageSmoothingEnabled = true;
         prepareCanvas(ctx, canvas);
-        let randomNumber = Math.floor(Math.random() * 4) + 6;
-        let backgroundPath = `/media/blobs/cardBackground/blob-collision-rect-${randomNumber}.svg`;
-        let svgText = await loadSVG(backgroundPath);
-        await drawBackground(ctx, canvas, svgText, card);
+        await drawBackground(ctx, canvas, blobSVGTexts.background, card);
         drawBorder(ctx, canvas);
         drawImageBox(ctx, canvas);
         await drawName(ctx, canvas, card);
-        await drawBlobs(ctx, canvas, card);
-
-
+        await drawBlobs(ctx, canvas, card, blobSVGTexts.pokeblob);
     } catch (error) {
         console.error('Error drawing card:', error);
     }
@@ -45,15 +41,16 @@ async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement
     ctx.fillText(card.name, x, y);
 }
 
-
-
-async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
-    for (let i = 0; i < card.pokeglobs.length; i++) {
-        let blobImagePath = `/media/blobs/blob/${card.pokeglobs[i].spikeness}.svg`;
-        let svgText = await loadSVG(blobImagePath);
-        drawBlob(ctx, canvas, svgText, card.pokeglobs.length, i, card.pokeglobs[i]);
-    }
+async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTexts: { [key: number]: string }) {
+    const drawPromises = card.pokeglobs.map((pokeglob, i) => {
+        const spikeness = pokeglob.spikeness;
+        const svgText = blobSVGTexts[spikeness - 1];
+        return drawBlob(ctx, canvas, svgText, card.pokeglobs.length, i, pokeglob);
+    });
+    await Promise.all(drawPromises);
 }
+
+
 
 async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, n: number, i: number, pokeblob: Pokeglob) {
     const sizeAdd = pokeblob.maxHealth / 500;
@@ -106,8 +103,9 @@ function drawBorder(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     ctx.stroke();
 }
 
-async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, card: PokeglobCard) {
+async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgTexts: { [key: number]: string; }, card: PokeglobCard) {
 
+    const svgText = svgTexts[Math.floor(Math.random() * Object.keys(svgTexts).length)];
     const n = card.pokeglobs.length; // number of regions
     const midX = canvas.width / 2;
     const midY = canvas.height / 2;
@@ -169,27 +167,24 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
     }
 }
 
-
-async function loadSVG(url: string,) {
-    const response = await fetch(url);
-    let svgText = await response.text();
-    return svgText;
-}
-
-
 function renderSVG(svgText: string, ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, strokeColor: string | false, fillColor: string | false, random?: boolean) {
     return new Promise<void>((resolve, reject) => {
-        // Replace stroke color if provided
         if (strokeColor) svgText = svgText.replace(/stroke="[^"]*"/g, `stroke="${strokeColor}"`);
         if (fillColor) svgText = svgText.replace(/fill="[^"]*"/g, `fill="${fillColor}"`);
+        const encodedSvg = encodeURIComponent(svgText);
+        const dataUrl = `data:image/svg+xml;charset=utf-8,${encodedSvg}`;
 
-        const svgBase64 = btoa(unescape(encodeURIComponent(svgText)));
-        const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
         const img = new Image();
         img.src = dataUrl;
+
         img.onload = () => {
             ctx.drawImage(img, x, y, width, height);
             resolve();
         };
+        img.onerror = (error) => {
+            console.error('SVG render error:', error);
+            reject(error);
+        };
+
     });
 }

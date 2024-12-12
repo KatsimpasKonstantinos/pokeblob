@@ -1,5 +1,5 @@
 import { Attack } from "../Classes/Attack";
-import { Pokeglob } from "../Classes/Pokeglob"
+import { Pokeglob, PokeGlobSpikenessType } from "../Classes/Pokeglob"
 import { PokeglobCard } from "../Classes/PokeglobCard";
 
 
@@ -15,7 +15,7 @@ function randomPokeglob(amount: number): Pokeglob[] {
     for (let i = 0; i < amount; i++) {
         const attack = randomAttack();
         let randomType = ["fire", "water", "holy"][Math.floor(Math.random() * 3)] as "fire" | "water" | "holy";
-        const pokeglob = new Pokeglob(randomType, Math.floor(Math.random() * Math.random() * 100), 100, [attack], Math.floor(Math.random() * 13) + 1);
+        const pokeglob = new Pokeglob(randomType, Math.floor(Math.random() * Math.random() * 100), 100, [attack], Math.floor(Math.random() * 13) + 1 as PokeGlobSpikenessType);
         pokeglobs.push(pokeglob);
     }
     return pokeglobs;
