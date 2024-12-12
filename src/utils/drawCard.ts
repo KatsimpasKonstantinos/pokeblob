@@ -6,9 +6,8 @@ async function drawCard(canvas: HTMLCanvasElement, card: PokeglobCard) {
     try {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
+        ctx.imageSmoothingEnabled = true;
+        prepareCanvas(ctx, canvas);
         let randomNumber = Math.floor(Math.random() * 4) + 6;
         let backgroundPath = `/media/blobs/cardBackground/blob-collision-rect-${randomNumber}.svg`;
         let svgText = await loadSVG(backgroundPath);
@@ -25,6 +24,12 @@ async function drawCard(canvas: HTMLCanvasElement, card: PokeglobCard) {
 }
 
 export { drawCard };
+
+function prepareCanvas(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = color.background;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
     // Calculate the font size based on canvas dimensions
