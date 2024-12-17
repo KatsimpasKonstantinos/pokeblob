@@ -7,7 +7,6 @@ async function drawCard(canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTe
     try {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-        ctx.imageSmoothingEnabled = true;
         prepareCanvas(ctx, canvas);
         await drawBackground(ctx, canvas, blobSVGTexts.background, card);
         drawBorder(ctx, canvas);
@@ -25,83 +24,15 @@ function prepareCanvas(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = color.background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.imageSmoothingEnabled = true;
 }
 
-async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
-    // Calculate the font size based on canvas dimensions
-    let fontSize = Math.min(canvas.width, canvas.height) / 15;
-    ctx.font = `${fontSize}px pilowlava`;
-    ctx.fillStyle = PokeglobTypeColor[card.pokeglobs[0].type].main;
-    const horizontalMargin = canvas.width * 0.1;
-    const verticalMargin = canvas.height * 0.021;
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    const x = horizontalMargin;
-    const y = verticalMargin;
-    ctx.fillText(card.name, x, y);
+async function drawBackground2(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgTexts: { [key: number]: string; }, card: PokeglobCard) {
+    const randomBackgroundSVGText = svgTexts[Math.floor(Math.random() * Object.keys(svgTexts).length)];
+    const numberOfRegions = card.pokeglobs.length;
+
 }
 
-async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTexts: { [key: number]: string }) {
-    const drawPromises = card.pokeglobs.map((pokeglob, i) => {
-        const spikeness = pokeglob.spikeness;
-        const svgText = blobSVGTexts[spikeness - 1];
-        return drawBlob(ctx, canvas, svgText, card.pokeglobs.length, i, pokeglob);
-    });
-    await Promise.all(drawPromises);
-}
-
-
-
-async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, n: number, i: number, pokeblob: Pokeglob) {
-    const sizeAdd = pokeblob.maxHealth / 500;
-    const horizontalMargin = canvas.width * 0.05;
-    const verticalMargin = canvas.height * 0.08;
-    const boxHeight = 0;
-    const horizontalArea = canvas.width - (horizontalMargin * 4);
-    const blobArea = (horizontalArea / n) / 2;
-    const blobWidth = canvas.width * (0.1 + sizeAdd);
-    const blobHeight = canvas.height * (0.05 + sizeAdd);
-    const horizontalOffset = i % 2 === 0 ? -(i * blobArea) : (i * blobArea);
-    const randomVerticalOffset = Math.floor(Math.random() * 15);
-    const x = canvas.width / 2 + horizontalOffset - horizontalMargin - sizeAdd * 300;
-    const y = verticalMargin * 2 + boxHeight + randomVerticalOffset - sizeAdd * 300;
-    await renderSVG(svgText, ctx, x, y, blobWidth, blobHeight, false, PokeglobTypeColor[pokeblob.type].main);
-}
-
-
-function drawImageBox(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-    const horizontalMargin = canvas.width * 0.04;
-    const verticalMargin = canvas.height * 0.06;
-    const boxHeight = canvas.height * 0.3;
-    ctx.fillStyle = `${color.background}80`; // Adding 80 for 50% transparency in hex
-    //ctx.fillStyle = color.background;
-    ctx.strokeStyle = color.accentB;
-    ctx.lineWidth = 0.5;
-    pathRoundedRect(ctx, horizontalMargin, verticalMargin, canvas.width - horizontalMargin * 2, boxHeight, 10);
-    ctx.fill();
-    ctx.stroke();
-}
-
-function pathRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.arcTo(x + width, y, x + width, y + height, radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
-    ctx.lineTo(x + radius, y + height);
-    ctx.arcTo(x, y + height, x, y + height - radius, radius);
-    ctx.lineTo(x, y + radius);
-    ctx.arcTo(x, y, x + radius, y, radius);
-    ctx.closePath();
-}
-
-function drawBorder(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-    ctx.strokeStyle = color.accentB;
-    ctx.lineWidth = 0.8;
-    pathRoundedRect(ctx, 1, 1, canvas.width - 1, canvas.height - 1, 5);
-    ctx.stroke();
-}
 
 async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgTexts: { [key: number]: string; }, card: PokeglobCard) {
 
@@ -167,6 +98,94 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
     }
 }
 
+
+function drawBorder(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+    ctx.strokeStyle = color.accentB;
+    ctx.lineWidth = 0.8;
+    pathRoundedRect(ctx, 1, 1, canvas.width - 1, canvas.height - 1, 5);
+    ctx.stroke();
+}
+
+
+function drawImageBox(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+    const horizontalMargin = canvas.width * 0.04;
+    const verticalMargin = canvas.height * 0.06;
+    const boxHeight = canvas.height * 0.3;
+    ctx.fillStyle = `${color.background}80`; // Adding 80 for 50% transparency in hex
+    //ctx.fillStyle = color.background;
+    ctx.strokeStyle = color.accentB;
+    ctx.lineWidth = 0.5;
+    pathRoundedRect(ctx, horizontalMargin, verticalMargin, canvas.width - horizontalMargin * 2, boxHeight, 10);
+    ctx.fill();
+    ctx.stroke();
+}
+
+async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
+    // Calculate the font size based on canvas dimensions
+    let fontSize = Math.min(canvas.width, canvas.height) / 15;
+    ctx.font = `${fontSize}px pilowlava`;
+    ctx.fillStyle = PokeglobTypeColor[card.pokeglobs[0].type].main;
+    const horizontalMargin = canvas.width * 0.1;
+    const verticalMargin = canvas.height * 0.021;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    const x = horizontalMargin;
+    const y = verticalMargin;
+    ctx.fillText(card.name, x, y);
+}
+
+async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTexts: { [key: number]: string }) {
+    const drawPromises = card.pokeglobs.map((pokeglob, i) => {
+        const spikeness = pokeglob.spikeness;
+        const svgText = blobSVGTexts[spikeness - 1];
+        return drawBlob(ctx, canvas, svgText, card.pokeglobs.length, i, pokeglob);
+    });
+    await Promise.all(drawPromises);
+}
+
+async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, n: number, i: number, pokeblob: Pokeglob) {
+    const { x, y, blobWidth, blobHeight } = calculateBlobPosition(n, i, canvas);
+    await renderSVG(svgText, ctx, x, y, blobWidth, blobHeight, false, PokeglobTypeColor[pokeblob.type].main);
+}
+
+//async function drawHealth(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
+//    const health = card.pokeglobs.reduce((acc, pokeglob) => acc + pokeglob.maxHealth, 0);
+//    ctx.fillText(card.health.toString(), x, y);
+//}
+
+function calculateBlobPosition(n: number, i: number, canvas: HTMLCanvasElement) {
+    const horizontalMargin = canvas.width * 0.05;
+    const verticalMargin = canvas.height * 0.08;
+    const boxHeight = 0;
+    const horizontalArea = canvas.width - (horizontalMargin * 4);
+    const blobArea = (horizontalArea / n) / 2;
+    const blobWidth = canvas.width * 0.1;
+    const blobHeight = canvas.height * 0.05;
+    const horizontalOffset = i % 2 === 0 ? -(i * blobArea) : (i * blobArea);
+    const randomVerticalOffset = Math.floor(Math.random() * 15);
+    const x = canvas.width / 2 + horizontalOffset - horizontalMargin;
+    const y = verticalMargin * 2 + boxHeight + randomVerticalOffset;
+    return { x, y, blobWidth, blobHeight };
+}
+
+
+
+function pathRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.arcTo(x + width, y, x + width, y + height, radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+    ctx.lineTo(x + radius, y + height);
+    ctx.arcTo(x, y + height, x, y + height - radius, radius);
+    ctx.lineTo(x, y + radius);
+    ctx.arcTo(x, y, x + radius, y, radius);
+    ctx.closePath();
+}
+
+
+
 function renderSVG(svgText: string, ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, strokeColor: string | false, fillColor: string | false, random?: boolean) {
     return new Promise<void>((resolve, reject) => {
         if (strokeColor) svgText = svgText.replace(/stroke="[^"]*"/g, `stroke="${strokeColor}"`);
@@ -185,6 +204,5 @@ function renderSVG(svgText: string, ctx: CanvasRenderingContext2D, x: number, y:
             console.error('SVG render error:', error);
             reject(error);
         };
-
     });
 }

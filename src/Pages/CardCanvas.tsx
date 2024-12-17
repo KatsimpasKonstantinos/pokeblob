@@ -29,7 +29,11 @@ function CardCanvas(props: { pokeglobCard: PokeglobCard, size: number, blobSVGTe
 
 
     return (
-        <div className="CardCanvas">
+        <div className="CardCanvas"
+            style={{
+                transform: 'rotate3d(1, 1, 0, ' + 60 * (Math.random() > 0.5 ? 1 : -1) + 'deg)'
+            }}
+        >
             <canvas
                 style={{ width: canvasWidth + "px", height: canvasHeight + "px" }}
                 id={canvasId}

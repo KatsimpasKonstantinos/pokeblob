@@ -12,7 +12,7 @@ function LibraryPage(props: { cardNumber: number, blobSVGTexts: BlobSVGTexts }) 
 
     function renderLibrary() {
         return pokeglobCards.map((pokeglobCard, index) => (
-            <CardCanvas key={index} pokeglobCard={pokeglobCard} size={0.5} blobSVGTexts={props.blobSVGTexts} />
+            <CardCanvas key={index} pokeglobCard={pokeglobCard} size={0.35} blobSVGTexts={props.blobSVGTexts} />
         ));
     }
 
