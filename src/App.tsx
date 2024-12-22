@@ -4,6 +4,8 @@ import LibraryPage from './Pages/LibraryPage';
 import { preLoadBlobs, BlobSVGTexts } from './utils/blobLoading';
 import CreatePokeblobPage from './Pages/CreatePokeblobPage';
 import Background from './Components/Background';
+import { Link, Route, Routes } from 'react-router-dom';
+import LandingPage from './Pages/LandingPage';
 
 
 function App() {
@@ -18,13 +20,21 @@ function App() {
     });
   }, []); // only runs once when the component mounts
 
+  function content() {
+    return (
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/create" element={<CreatePokeblobPage />} />
+        <Route path="/library" element={<LibraryPage cardNumber={1} blobSVGTexts={blobSVGTexts} />} />
+      </Routes>
+    );
+  }
+
   return (
     <div className="App">
-      <h1>Pokeglobs</h1>
-      <Background />
-      {ready ? <LibraryPage cardNumber={1} blobSVGTexts={blobSVGTexts} /> : <h1>Loading......................</h1>}
-      <CreatePokeblobPage />
-
+      <Background blobSVGTexts={blobSVGTexts} />
+      <Link to="/create"><button>go to /create</button></Link>
+      {content()}
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import React, { CSSProperties } from "react";
+import { BackgroundCardState } from "../Components/Background";
 
 function CreatePokeblobPage() {
+    BackgroundCardState.value = "BackgroundCreatePage";
     return (
         <div style={styles.container}>
             <h1 style={styles.heading}>Create Pokeblob</h1>
@@ -25,13 +27,11 @@ const styles: Record<string, CSSProperties> = {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f9f9f9",
         fontFamily: "'Arial', sans-serif",
     },
     heading: {
         marginBottom: "1.5rem",
-        color: "#333",
+        color: "#FF5053",
         fontSize: "2rem",
     },
     form: {

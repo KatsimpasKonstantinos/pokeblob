@@ -9,11 +9,6 @@
 }
 
 
-
-.CardCanvas {
-    animation: rotateAnimation 1s forwards ease-in-out;
-}
-
 .CradCanvasWrap {
     perspective: 2000px;
     transform-style: preserve-3d;

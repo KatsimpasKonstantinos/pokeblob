@@ -1,9 +1,24 @@
-.Background {
-    background-color: #007bff;
-    color: #007bff;
+.BackgroundWrapper {
+    transform-style: preserve-3d;
+    perspective: 2000px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
 }
 
-.BackgroundAnimate {
-    background-color: #ff0033;
-    color: #ff0033;
+.Background {
+    transition: transform 0.5s ease-out;
+}
+
+.BackgroundLandingPage {
+    transform: rotateX(0deg) rotateZ(0deg) scale(1);
+}
+
+.BackgroundCreatePage {
+    transform: rotateX(80deg) rotateZ(90deg) scale(2);
+
 }
