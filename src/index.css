@@ -61,3 +61,16 @@ h2 {
   font-size: 1.5rem;
   color: var(--color-primary);
 }
+
+a {
+  color: var(--color-accent-b);
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--color-accent-a);
+}
+
+a:visited {}

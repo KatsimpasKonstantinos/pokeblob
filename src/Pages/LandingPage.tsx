@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BackgroundCardName, BackgroundCardOwner, BackgroundCardStyle } from '../Components/Background';
+import { Link } from 'react-router-dom';
 
 function LandingPage() {
 
@@ -11,6 +12,7 @@ function LandingPage() {
 
     return (
         <div>
+            <h1>Welcome to <Link to="/create">Pokeblobs</Link></h1>
         </div>
     );
 }
