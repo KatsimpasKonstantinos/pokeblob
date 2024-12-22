@@ -1,0 +1,19 @@
+@keyframes rotateAnimation {
+    0% {
+        transform: rotate3d(-1, 0.5, 1, 40deg);
+
+    }
+
+    50% {
+        transform: rotate3d(-2, 1, 2, 60deg);
+    }
+
+    100% {
+        transform: rotate3d(-1, 0.5, 1, 40deg);
+
+    }
+}
+
+.CardCanvas {
+    animation: rotateAnimation 10s infinite ease-in-out;
+}

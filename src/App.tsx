@@ -20,11 +20,14 @@ function App() {
   return (
     <div className="App">
       <h1>Pokeglobs</h1>
-      {ready ? <LibraryPage cardNumber={20} blobSVGTexts={blobSVGTexts} /> : <h1>Loading......................</h1>}
+      {ready ? <LibraryPage cardNumber={4} blobSVGTexts={blobSVGTexts} /> : <h1>Loading......................</h1>}
+      <CreatePokeblobPage />
 
     </div>
   );
 }
+
+//
 
 
 export default App;

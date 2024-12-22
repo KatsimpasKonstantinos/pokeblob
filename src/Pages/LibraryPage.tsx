@@ -1,6 +1,5 @@
 import React from 'react';
 import { randomPokeglobCard } from '../utils/randomData';
-import { Pokeglob } from '../Classes/Pokeglob';
 import { PokeglobCard } from '../Classes/PokeglobCard';
 import CardCanvas from './CardCanvas';
 import { BlobSVGTexts } from '../utils/blobLoading';
@@ -12,7 +11,7 @@ function LibraryPage(props: { cardNumber: number, blobSVGTexts: BlobSVGTexts }) 
 
     function renderLibrary() {
         return pokeglobCards.map((pokeglobCard, index) => (
-            <CardCanvas key={index} pokeglobCard={pokeglobCard} size={0.35} blobSVGTexts={props.blobSVGTexts} />
+            <CardCanvas key={index} pokeglobCard={pokeglobCard} size={1} blobSVGTexts={props.blobSVGTexts} />
         ));
     }
 
