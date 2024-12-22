@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BackgroundCardName, BackgroundCardStyle } from '../Components/Background';
+import { BackgroundCardName, BackgroundCardOwner, BackgroundCardStyle } from '../Components/Background';
 
 function LandingPage() {
 
     useEffect(() => {
         BackgroundCardStyle.value = "BackgroundLandingPage";
         BackgroundCardName.value = "LandingPage";
+        BackgroundCardOwner.value = "Konstantinos Katsimpas";
     }, []);
 
     return (

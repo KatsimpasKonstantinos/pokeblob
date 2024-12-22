@@ -15,6 +15,7 @@ async function drawCard(canvas: HTMLCanvasElement, card: PokeblobCard, blobSVGTe
         drawBorder(ctx, canvas);
         drawImageBox(ctx, canvas);
         await drawName(ctx, canvas, card);
+        await drawOwner(ctx, canvas, card);
         await drawBlobs(ctx, canvas, card, blobSVGTexts.pokeblob);
     } catch (error) {
         console.error('Error drawing card:', error);
@@ -131,17 +132,29 @@ async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement
     ctx.fillText(card.name, x, y);
 }
 
+async function drawOwner(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeblobCard) {
+    let fontSize = Math.min(canvas.width, canvas.height) / 20;
+    ctx.font = `${fontSize}px space-mono`;
+    ctx.fillStyle = color.accentB;
+    const horizontalMargin = canvas.width * 0.05;
+    const verticalMargin = canvas.height * 0.962;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    const x = horizontalMargin;
+    const y = verticalMargin;
+    ctx.fillText("By " + card.owner, x, y);
+}
+
 async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeblobCard, blobSVGTexts: { [key: number]: string }) {
     const drawPromises = card.pokeglobs.map((pokeglob, i) => {
-        const spikeness = pokeglob.spikeness;
-        const svgText = blobSVGTexts[spikeness - 1];
+        const svgText = blobSVGTexts[pokeglob.spikeness];
         return drawBlob(ctx, canvas, svgText, card.pokeglobs.length, i, pokeglob);
     });
     await Promise.all(drawPromises);
 }
 
 async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, n: number, i: number, pokeblob: Pokeblob) {
-    const { x, y, blobWidth, blobHeight } = calculateBlobPosition(n, i, canvas);
+    const { x, y, blobWidth, blobHeight } = calculateBlobPosition(n, i, canvas, pokeblob);
     await renderSVG(svgText, ctx, x, y, blobWidth, blobHeight, false, PokeblobTypeColor[pokeblob.type].main);
 }
 
@@ -150,17 +163,18 @@ async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement
 //    ctx.fillText(card.health.toString(), x, y);
 //}
 
-function calculateBlobPosition(n: number, i: number, canvas: HTMLCanvasElement) {
+function calculateBlobPosition(n: number, i: number, canvas: HTMLCanvasElement, pokeblob: Pokeblob) {
+    console.log(pokeblob.maxHealth);
     const horizontalMargin = canvas.width * 0.05;
     const verticalMargin = canvas.height * 0.08;
-    const boxHeight = 0;
     const horizontalArea = canvas.width - (horizontalMargin * 4);
     const blobArea = (horizontalArea / n) / 2;
-    const blobWidth = canvas.width * 0.1;
-    const blobHeight = canvas.height * 0.05;
+    const sizeAdd = pokeblob.maxHealth * 2
+    const blobWidth = canvas.width * 0.1 + sizeAdd;
+    const blobHeight = canvas.height * 0.05 + sizeAdd;
     const horizontalOffset = i % 2 === 0 ? -(i * blobArea) : (i * blobArea);
-    const x = canvas.width / 2 + horizontalOffset - horizontalMargin;
-    const y = verticalMargin * 2 + boxHeight;
+    const x = canvas.width / 2 + horizontalOffset - horizontalMargin - pokeblob.maxHealth;
+    const y = verticalMargin * 2 - pokeblob.maxHealth;
     return { x, y, blobWidth, blobHeight };
 }
 

@@ -49,3 +49,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h1 {
+  font-family: 'pilowlava';
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+
+h2 {
+  font-family: 'space-mono';
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}

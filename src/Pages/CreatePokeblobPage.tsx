@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BackgroundCardStyle, BackgroundCardStateType, BackgroundCardName, BackgroundCardOwner } from "../Components/Background";
+import "./CreatePokeblobPage.css";
 
 function CreatePokeblobPage() {
     const [name, setName] = useState("");
@@ -26,42 +27,50 @@ function CreatePokeblobPage() {
     }, []);
 
     return (
-        <div
-            ref={containerRef}
-            tabIndex={-1} // Make div focusable for blur detection
-            onBlur={handleBlur}
-        >
+        <>
             <h1>Create Pokeblob</h1>
-            <div>
-                <label>
-                    Name:
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        onFocus={() => handleFocus("BackgroundCreatePageName")}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Owner:
-                    <input
-                        type="text"
-                        value={owner}
-                        onChange={(e) => setOwner(e.target.value)}
-                        onFocus={() => handleFocus("BackgroundCreatePageOwner")}
-                    />
-                </label>
-            </div>
-            <Link
-                to={`/generating?name=${encodeURIComponent(
-                    name
-                )}&owner=${encodeURIComponent(owner)}`}
+            <div
+                className="CreatePokeblobPage-container"
+                ref={containerRef}
+                tabIndex={-1} // Make div focusable for blur detection
+                onBlur={handleBlur}
             >
-                <button disabled={!name || !owner}>CREATE</button>
-            </Link>
-        </div>
+                <div className="CreatePokeblobPage-input-group">
+                    <label className="CreatePokeblobPage-label">
+                        Name:
+                        <input
+                            className="CreatePokeblobPage-input"
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            onFocus={() => handleFocus("BackgroundCreatePageName")}
+                        />
+                    </label>
+                </div>
+                <div className="CreatePokeblobPage-input-group">
+                    <label className="CreatePokeblobPage-label">
+                        Owner:
+                        <input
+                            className="CreatePokeblobPage-input"
+                            type="text"
+                            value={owner}
+                            onChange={(e) => setOwner(e.target.value)}
+                            onFocus={() => handleFocus("BackgroundCreatePageOwner")}
+                        />
+                    </label>
+                </div>
+                <Link
+                    className="CreatePokeblobPage-link"
+                    to={`/generating?name=${encodeURIComponent(
+                        name
+                    )}&owner=${encodeURIComponent(owner)}`}
+                >
+                    <button className="CreatePokeblobPage-button" disabled={!name || !owner}>
+                        CREATE
+                    </button>
+                </Link>
+            </div>
+        </>
     );
 }
 

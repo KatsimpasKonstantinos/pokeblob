@@ -39,8 +39,7 @@ function App() {
 
   return (
     <div className="App">
-      <Link to="/create"><button>go to /create</button></Link>
-      {ready ? content() : <h1>Loading...</h1>}
+      {ready ? content() : <h1>Loading...<h2>Loading...</h2></h1>}
     </div>
   );
 }

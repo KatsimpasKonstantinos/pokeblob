@@ -15,7 +15,7 @@ function randomPokeglob(amount: number): Pokeblob[] {
     for (let i = 0; i < amount; i++) {
         const attack = randomAttack();
         let randomType = ["fire", "water", "holy"][Math.floor(Math.random() * 3)] as "fire" | "water" | "holy";
-        const pokeglob = new Pokeblob(randomType, Math.floor(Math.random() * Math.random() * 100), 100, [attack], Math.floor(Math.random() * 13) + 1 as PokeblobSpikenessType);
+        const pokeglob = new Pokeblob(randomType, Math.floor(Math.random() * Math.random() * 100), 100, [attack], Math.floor(Math.random() * 13) as PokeblobSpikenessType);
         pokeglobs.push(pokeglob);
     }
     return pokeglobs;
