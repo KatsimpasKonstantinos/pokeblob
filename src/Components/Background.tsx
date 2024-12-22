@@ -1,24 +1,28 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Background.css';
 import { randomPokeglobCard } from '../utils/randomData';
-import CardCanvas from '../Pages/CardCanvas';
 import { BlobSVGTexts } from '../utils/blobLoading';
-import { computed, signal } from '@preact/signals-react';
+import { computed, effect, signal, useComputed } from '@preact/signals-react';
+import BackgroundCanvas from './BackgroundCanvas';
 
-type BackgroundCardStateType = 'BackgroundLandingPage' | 'BackgroundCreatePage' | 'BackgroundDefault';
-export const BackgroundCardState = signal<BackgroundCardStateType>();
+export type BackgroundCardStateType = 'BackgroundLandingPage' | 'BackgroundCreatePage' | 'BackgroundCreatePageName' | 'BackgroundCreatePageOwner' | 'BackgroundGeneratingPage' | 'BackgroundNotFoundPage' | 'BackgroundDefault';
+export const BackgroundCardStyle = signal<BackgroundCardStateType>();
+
+export const BackgroundCardName = signal<string>("Default Name");
+export const BackgroundCardOwner = signal<string>("Default Owner");
+
 
 function Background(props: { blobSVGTexts: BlobSVGTexts }) {
     const boxRef = useRef(null);
 
-    const pokeglobCard = randomPokeglobCard();
+    const BackgroundCardPokeblobCard = randomPokeglobCard(false);
 
     const triggerAnimation = computed(() => {
-        console.log('triggerAnimation');
+        void BackgroundCardStyle.value; // BackgroundCardStyle.value ?? doesnt trigger signals >:(
         const box = boxRef.current;
         if (!box) return;
         box.className = "Background";
-        box.classList.add(BackgroundCardState.value ?? "BackgroundDefault");
+        box.classList.add(BackgroundCardStyle.value ?? "BackgroundDefault");
         void box.offsetWidth; // forces reflow
         return ""
     });
@@ -26,7 +30,7 @@ function Background(props: { blobSVGTexts: BlobSVGTexts }) {
     return (
         <div className='BackgroundWrapper'>
             <div ref={boxRef} className='Background'>
-                <CardCanvas pokeglobCard={pokeglobCard} size={window.innerWidth / 1500} blobSVGTexts={props.blobSVGTexts} />
+                <BackgroundCanvas pokeglobCard={BackgroundCardPokeblobCard} blobSVGTexts={props.blobSVGTexts} />
             </div>
             {triggerAnimation}
         </div>

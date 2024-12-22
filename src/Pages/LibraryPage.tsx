@@ -1,13 +1,13 @@
 import React from 'react';
 import { randomPokeglobCard } from '../utils/randomData';
-import { PokeglobCard } from '../Classes/PokeglobCard';
+import { PokeblobCard } from '../Classes/PokeblobCard';
 import CardCanvas from './CardCanvas';
 import { BlobSVGTexts } from '../utils/blobLoading';
 
 function LibraryPage(props: { cardNumber: number, blobSVGTexts: BlobSVGTexts }) {
 
     const cardNumber = props.cardNumber;
-    const pokeglobCards: PokeglobCard[] = Array.from({ length: cardNumber }, () => randomPokeglobCard());
+    const pokeglobCards: PokeblobCard[] = Array.from({ length: cardNumber }, () => randomPokeglobCard(true));
 
     function renderLibrary() {
         return pokeglobCards.map((pokeglobCard, index) => (

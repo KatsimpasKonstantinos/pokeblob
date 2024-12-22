@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { BackgroundCardState } from '../Components/Background';
+import { BackgroundCardName, BackgroundCardStyle } from '../Components/Background';
 
 function LandingPage() {
-    BackgroundCardState.value = "BackgroundLandingPage";
+
+    useEffect(() => {
+        BackgroundCardStyle.value = "BackgroundLandingPage";
+        BackgroundCardName.value = "LandingPage";
+    }, []);
 
     return (
         <div>
-            <h1>Landing Page</h1>
         </div>
     );
 }

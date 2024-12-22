@@ -1,9 +1,12 @@
-import { Pokeglob, PokeglobTypeColor, PokeglobSpikenessMax } from '../Classes/Pokeglob';
-import { PokeglobCard } from '../Classes/PokeglobCard';
+import { Pokeblob, PokeblobTypeColor, PokeblobSpikenessMax } from '../Classes/Pokeblob';
+import { PokeblobCard } from '../Classes/PokeblobCard';
 import { color } from './color';
 import { BlobSVGTexts, loadSVG } from './blobLoading';
+import seedrandom from 'seedrandom';
 
-async function drawCard(canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTexts: BlobSVGTexts) {
+
+
+async function drawCard(canvas: HTMLCanvasElement, card: PokeblobCard, blobSVGTexts: BlobSVGTexts) {
     try {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
@@ -27,16 +30,11 @@ function prepareCanvas(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement)
     ctx.imageSmoothingEnabled = true;
 }
 
-async function drawBackground2(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgTexts: { [key: number]: string; }, card: PokeglobCard) {
-    const randomBackgroundSVGText = svgTexts[Math.floor(Math.random() * Object.keys(svgTexts).length)];
-    const numberOfRegions = card.pokeglobs.length;
-
-}
 
 
-async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgTexts: { [key: number]: string; }, card: PokeglobCard) {
+async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgTexts: { [key: number]: string; }, card: PokeblobCard) {
 
-    const svgText = svgTexts[Math.floor(Math.random() * Object.keys(svgTexts).length)];
+    const svgText = svgTexts[Math.floor(seedrandom(card.id.toString())() * Object.keys(svgTexts).length)];
     const n = card.pokeglobs.length; // number of regions
     const midX = canvas.width / 2;
     const midY = canvas.height / 2;
@@ -53,7 +51,7 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
         ctx.lineTo(0, canvas.height);
         ctx.closePath();
         ctx.clip();
-        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[0].type].background, false);
+        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeblobTypeColor[card.pokeglobs[0].type].background, false);
         ctx.restore();
     } else if (n === 2) {
         // Split canvas into two halves
@@ -65,7 +63,7 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
         ctx.lineTo(0, canvas.height / 2);
         ctx.closePath();
         ctx.clip();
-        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[0].type].background, false);
+        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeblobTypeColor[card.pokeglobs[0].type].background, false);
         ctx.restore();
 
         ctx.save();
@@ -76,7 +74,7 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
         ctx.lineTo(0, canvas.height);
         ctx.closePath();
         ctx.clip();
-        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[1].type].background, false);
+        await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeblobTypeColor[card.pokeglobs[1].type].background, false);
         ctx.restore();
     } else {
         // Split canvas into 'n' equal slices
@@ -92,7 +90,7 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
             ctx.lineTo(midX + radius * Math.cos(endAngle), midY + radius * Math.sin(endAngle));
             ctx.closePath();
             ctx.clip();
-            await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeglobTypeColor[card.pokeglobs[i].type].background, false);
+            await renderSVG(svgText, ctx, 0, 0, canvas.width, canvas.height, PokeblobTypeColor[card.pokeglobs[i].type].background, false);
             ctx.restore();
         }
     }
@@ -120,11 +118,10 @@ function drawImageBox(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) 
     ctx.stroke();
 }
 
-async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
-    // Calculate the font size based on canvas dimensions
+async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeblobCard) {
     let fontSize = Math.min(canvas.width, canvas.height) / 15;
     ctx.font = `${fontSize}px pilowlava`;
-    ctx.fillStyle = PokeglobTypeColor[card.pokeglobs[0].type].main;
+    ctx.fillStyle = PokeblobTypeColor[card.pokeglobs[0].type].main;
     const horizontalMargin = canvas.width * 0.1;
     const verticalMargin = canvas.height * 0.021;
     ctx.textAlign = 'left';
@@ -134,7 +131,7 @@ async function drawName(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement
     ctx.fillText(card.name, x, y);
 }
 
-async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard, blobSVGTexts: { [key: number]: string }) {
+async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeblobCard, blobSVGTexts: { [key: number]: string }) {
     const drawPromises = card.pokeglobs.map((pokeglob, i) => {
         const spikeness = pokeglob.spikeness;
         const svgText = blobSVGTexts[spikeness - 1];
@@ -143,9 +140,9 @@ async function drawBlobs(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElemen
     await Promise.all(drawPromises);
 }
 
-async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, n: number, i: number, pokeblob: Pokeglob) {
+async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, svgText: string, n: number, i: number, pokeblob: Pokeblob) {
     const { x, y, blobWidth, blobHeight } = calculateBlobPosition(n, i, canvas);
-    await renderSVG(svgText, ctx, x, y, blobWidth, blobHeight, false, PokeglobTypeColor[pokeblob.type].main);
+    await renderSVG(svgText, ctx, x, y, blobWidth, blobHeight, false, PokeblobTypeColor[pokeblob.type].main);
 }
 
 //async function drawHealth(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, card: PokeglobCard) {
@@ -162,9 +159,8 @@ function calculateBlobPosition(n: number, i: number, canvas: HTMLCanvasElement) 
     const blobWidth = canvas.width * 0.1;
     const blobHeight = canvas.height * 0.05;
     const horizontalOffset = i % 2 === 0 ? -(i * blobArea) : (i * blobArea);
-    const randomVerticalOffset = Math.floor(Math.random() * 15);
     const x = canvas.width / 2 + horizontalOffset - horizontalMargin;
-    const y = verticalMargin * 2 + boxHeight + randomVerticalOffset;
+    const y = verticalMargin * 2 + boxHeight;
     return { x, y, blobWidth, blobHeight };
 }
 

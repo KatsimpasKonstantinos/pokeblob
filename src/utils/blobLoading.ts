@@ -1,6 +1,6 @@
 async function preLoadBlobs() {
-    const pokeblob = await preLoad("/media/blobs/blob/", 13);
-    const background = await preLoad("/media/blobs/cardBackground/", 4);
+    const pokeblob = await preLoadSVG("/media/blobs/blob/", 13);
+    const background = await preLoadSVG("/media/blobs/cardBackground/", 4);
     return { pokeblob, background };
 }
 //BlobSVGTexts = preloadBlob but resolved
@@ -12,8 +12,7 @@ async function loadSVG(url: string,) {
     return svgText;
 }
 
-
-async function preLoad(url: string, amount: number) {
+async function preLoadSVG(url: string, amount: number) {
     const svgTexts: { [key: number]: string } = {};
     const loadPromises = [];
     for (let i = 0; i < amount; i++) {
@@ -27,5 +26,7 @@ async function preLoad(url: string, amount: number) {
     await Promise.all(loadPromises);
     return svgTexts;
 }
+
+
 
 export { loadSVG, preLoadBlobs, BlobSVGTexts };

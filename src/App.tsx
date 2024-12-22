@@ -6,11 +6,13 @@ import CreatePokeblobPage from './Pages/CreatePokeblobPage';
 import Background from './Components/Background';
 import { Link, Route, Routes } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
-
+import GeneratingPage from './Pages/GeneratingPage';
+import NotFoundPage from './Pages/NotFoundPage';
 
 function App() {
   const [ready, setReady] = React.useState(false);
   const [blobSVGTexts, setBlobSVGTexts] = React.useState<BlobSVGTexts>();
+
 
   React.useEffect(() => {
     preLoadBlobs().then((data) => {
@@ -22,19 +24,23 @@ function App() {
 
   function content() {
     return (
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/create" element={<CreatePokeblobPage />} />
-        <Route path="/library" element={<LibraryPage cardNumber={1} blobSVGTexts={blobSVGTexts} />} />
-      </Routes>
+      <>
+        <Background blobSVGTexts={blobSVGTexts} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/create" element={<CreatePokeblobPage />} />
+          <Route path="/generating" element={<GeneratingPage />} />
+          <Route path="/library" element={<LibraryPage cardNumber={1} blobSVGTexts={blobSVGTexts} />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </>
     );
   }
 
   return (
     <div className="App">
-      <Background blobSVGTexts={blobSVGTexts} />
       <Link to="/create"><button>go to /create</button></Link>
-      {content()}
+      {ready ? content() : <h1>Loading...</h1>}
     </div>
   );
 }
