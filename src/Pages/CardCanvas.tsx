@@ -31,15 +31,16 @@ function CardCanvas(props: { pokeglobCard: PokeglobCard, size: number, blobSVGTe
 
 
     return (
-        <div className="CardCanvas">
-            <canvas
-                style={{ width: canvasWidth + "px", height: canvasHeight + "px" }}
-                id={canvasId}
-                width={400} // actual resolution
-                height={800}
-            ></canvas>
+        <div className='CradCanvasWrap'>
+            <div className="CardCanvas">
+                <canvas
+                    style={{ width: canvasWidth + "px", height: canvasHeight + "px" }}
+                    id={canvasId}
+                    width={400} // actual resolution
+                    height={800}
+                ></canvas>
+            </div>
         </div>
-
     );
 }
 

@@ -3,6 +3,7 @@ import './App.css';
 import LibraryPage from './Pages/LibraryPage';
 import { preLoadBlobs, BlobSVGTexts } from './utils/blobLoading';
 import CreatePokeblobPage from './Pages/CreatePokeblobPage';
+import Background from './Components/Background';
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
   return (
     <div className="App">
       <h1>Pokeglobs</h1>
-      {ready ? <LibraryPage cardNumber={4} blobSVGTexts={blobSVGTexts} /> : <h1>Loading......................</h1>}
+      <Background />
+      {ready ? <LibraryPage cardNumber={1} blobSVGTexts={blobSVGTexts} /> : <h1>Loading......................</h1>}
       <CreatePokeblobPage />
 
     </div>
