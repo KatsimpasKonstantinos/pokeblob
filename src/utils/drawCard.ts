@@ -99,9 +99,9 @@ async function drawBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasE
 
 
 function drawBorder(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-    ctx.strokeStyle = color.accentB;
-    ctx.lineWidth = 0.8;
-    pathRoundedRect(ctx, 1, 1, canvas.width - 1, canvas.height - 1, 5);
+    ctx.strokeStyle = color.accentC;
+    ctx.lineWidth = 2;
+    pathRoundedRect(ctx, 2, 2, canvas.width - 2, canvas.height - 2, 5);
     ctx.stroke();
 }
 
@@ -164,7 +164,6 @@ async function drawBlob(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement
 //}
 
 function calculateBlobPosition(n: number, i: number, canvas: HTMLCanvasElement, pokeblob: Pokeblob) {
-    console.log(pokeblob.maxHealth);
     const horizontalMargin = canvas.width * 0.05;
     const verticalMargin = canvas.height * 0.08;
     const horizontalArea = canvas.width - (horizontalMargin * 4);

@@ -8,5 +8,5 @@ Style heavily inspired by the [38C3's Design Concept
 hosted on https://pokeblob.com/
 
 ## Time spent on this Project
-- Konsti: 20h
+- Konsti: 21h
 
