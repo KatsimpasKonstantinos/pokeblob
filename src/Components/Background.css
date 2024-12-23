@@ -19,20 +19,61 @@
 }
 
 .BackgroundCreatePage {
-    transform: translateY(15vh) translateX(20vw) rotateX(0deg) rotateZ(0deg) scale(1.1);
+    transform: translateY(15vh) translateX(20vw)rotateY(-30deg) rotateX(20deg) scale(1.2);
 }
 
 .BackgroundCreatePageName {
-    transform: translateY(50vh) translateX(20vw) rotateX(0deg) rotateZ(0deg) scale(2);
+    transform: translateY(45vh) translateX(20vw)rotateY(-20deg) rotateX(40deg) rotateZ(0deg) scale(3);
 }
 
 .BackgroundCreatePageOwner {
-    transform: translateY(-30vh) translateX(20vw) rotateX(0deg) rotateZ(0deg) scale(2);
+    transform: translateY(-50vh) translateX(-10vw) rotateY(20deg) rotateX(40deg) scale(3);
 }
 
 .BackgroundGeneratingPage {
     transform: translateY(25vh) rotateX(80deg) rotateZ(90deg) scale(2);
+    animation: BackgroundGeneratingPageGenerate 3s forwards ease-in-out;
+    animation-delay: 1s;
 }
+
+@keyframes BackgroundGeneratingPageGenerate {
+    0% {
+        transform: translateY(25vh) rotateX(80deg) rotateZ(90deg) scale(2);
+        animation-timing-function: ease-in;
+        /* starts slow */
+    }
+
+    20% {
+        transform: translateY(25vh) rotateX(80deg) rotateZ(120deg) scale(2);
+    }
+
+    40% {
+        transform: translateY(25vh) rotateX(80deg) rotateZ(60deg) scale(2);
+    }
+
+    60% {
+        transform: translateY(25vh) rotateX(80deg) rotateZ(150deg) scale(2.2);
+        animation-timing-function: ease-out;
+        /* shaking effect */
+    }
+
+    70% {
+        transform: translateY(-10vh) rotateX(120deg) rotateZ(360deg) scale(1);
+    }
+
+    80% {
+        transform: translateY(10vh) rotateX(120deg) rotateZ(0deg) scale(0.1);
+        opacity: 0.9;
+    }
+
+
+
+    100% {
+        transform: translateY(0vh) rotateX(360deg) rotateZ(0deg) scale(5);
+        opacity: 0;
+    }
+}
+
 
 .BackgroundNotFoundPage {
     transform: translateY(15vh) translateX(0vw) rotateX(0deg) rotateZ(0deg) scale(1.2);

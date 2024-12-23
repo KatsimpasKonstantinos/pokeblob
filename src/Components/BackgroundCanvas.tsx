@@ -57,8 +57,8 @@ function BackgroundCanvas(props: { pokeglobCard: PokeblobCard, blobSVGTexts: Blo
         <div>
             <canvas
                 ref={canvas1Ref}
-                width={600}
-                height={1200}
+                width={800}
+                height={1600}
                 style={{
                     width: canvasWidth + 'px',
                     height: canvasHeight + 'px',
@@ -66,8 +66,8 @@ function BackgroundCanvas(props: { pokeglobCard: PokeblobCard, blobSVGTexts: Blo
             />
             <canvas
                 ref={canvas2Ref}
-                width={600}
-                height={1200}
+                width={800}
+                height={1600}
                 style={{
                     width: 0 + 'px',
                     height: 0 + 'px',

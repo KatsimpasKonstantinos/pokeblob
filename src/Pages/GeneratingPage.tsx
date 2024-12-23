@@ -10,7 +10,6 @@ function GeneratingPage() {
     return (
         <div>
             <h1>Generating Page</h1>
-            <p>This page is generated at runtime.</p>
         </div>
     );
 }

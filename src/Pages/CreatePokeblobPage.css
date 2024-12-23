@@ -1,6 +1,13 @@
+.CreatePokeblobPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .CreatePokeblobPage-container {
+    margin-top: 10vh;
     max-width: 20vw;
-    margin: 10vh 0 0 30vw;
+    min-width: 300px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
